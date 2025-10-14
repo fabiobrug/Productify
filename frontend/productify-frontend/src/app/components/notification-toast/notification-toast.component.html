@@ -1,0 +1,32 @@
+<!-- Notification Toast Container -->
+<div class="fixed top-4 right-4 z-50 space-y-2 max-w-sm w-full">
+  <div
+    *ngFor="let notification of notifications"
+    class="transform transition-all duration-300 ease-in-out animate-slide-up"
+    [class]="getNotificationColor(notification.type)">
+    
+    <div class="flex items-start p-4 border rounded-lg shadow-lg">
+      <!-- Icon -->
+      <div class="flex-shrink-0 mr-3">
+        <svg class="w-5 h-5" [class]="getIconColor(notification.type)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getNotificationIcon(notification.type)"></path>
+        </svg>
+      </div>
+      
+      <!-- Content -->
+      <div class="flex-1 min-w-0">
+        <h4 class="text-sm font-medium">{{ notification.title }}</h4>
+        <p class="mt-1 text-sm opacity-90">{{ notification.message }}</p>
+      </div>
+      
+      <!-- Close Button -->
+      <button
+        (click)="removeNotification(notification.id)"
+        class="flex-shrink-0 ml-3 p-1 rounded-full hover:bg-black hover:bg-opacity-10 touch-target">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
