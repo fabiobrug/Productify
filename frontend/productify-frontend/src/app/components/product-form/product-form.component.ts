@@ -99,7 +99,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   }
 
   private createProduct(productData: CreateProductRequest): void {
-    this.productService.createProduct(productData)
+    // Convert price to number if it's a string
+    const processedData = {
+      ...productData,
+      price: typeof productData.price === 'string' ? parseFloat(productData.price) : productData.price
+    };
+
+    this.productService.createProduct(processedData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {
@@ -131,7 +137,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   private updateProduct(productData: UpdateProductRequest): void {
     if (!this.productId) return;
 
-    this.productService.updateProduct(this.productId, productData)
+    // Convert price to number if it's a string
+    const processedData = {
+      ...productData,
+      price: typeof productData.price === 'string' ? parseFloat(productData.price) : productData.price
+    };
+
+    this.productService.updateProduct(this.productId, processedData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {

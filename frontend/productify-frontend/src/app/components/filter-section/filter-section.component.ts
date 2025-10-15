@@ -58,12 +58,25 @@ export class FilterSectionComponent implements OnInit, OnDestroy {
 
   onMinPriceChange(minPrice: string): void {
     this.minPrice = minPrice ? parseFloat(minPrice) : null;
-    this.emitFilterChange({ minPrice: this.minPrice ?? undefined });
+    this.emitPriceFilterChange();
   }
 
   onMaxPriceChange(maxPrice: string): void {
     this.maxPrice = maxPrice ? parseFloat(maxPrice) : null;
-    this.emitFilterChange({ maxPrice: this.maxPrice ?? undefined });
+    this.emitPriceFilterChange();
+  }
+
+  private emitPriceFilterChange(): void {
+    this.emitFilterChange({ 
+      minPrice: this.minPrice ?? undefined,
+      maxPrice: this.maxPrice ?? undefined
+    });
+  }
+
+  onQuickPriceFilter(minPrice: string, maxPrice: string): void {
+    this.minPrice = minPrice ? parseFloat(minPrice) : null;
+    this.maxPrice = maxPrice ? parseFloat(maxPrice) : null;
+    this.emitPriceFilterChange();
   }
 
   onSortChange(): void {

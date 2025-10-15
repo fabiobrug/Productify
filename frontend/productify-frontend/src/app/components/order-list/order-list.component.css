@@ -1,0 +1,16 @@
+/* Custom styles for order list component */
+.order-item {
+  transition: all 0.2s ease-in-out;
+}
+
+.order-item:hover {
+  transform: translateY(-1px);
+}
+
+.status-badge {
+  transition: all 0.2s ease-in-out;
+}
+
+.status-badge:hover {
+  transform: scale(1.05);
+}

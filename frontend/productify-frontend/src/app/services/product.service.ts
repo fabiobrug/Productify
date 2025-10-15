@@ -161,33 +161,40 @@ export class ProductService {
       filteredProducts = filteredProducts.filter(product => product.price <= filter.maxPrice!);
     }
 
-    // Sort
-    if (filter.sortBy) {
-      filteredProducts.sort((a, b) => {
-        let aValue: any, bValue: any;
-        
-        switch (filter.sortBy) {
-          case 'name':
-            aValue = a.name.toLowerCase();
-            bValue = b.name.toLowerCase();
-            break;
-          case 'price':
-            aValue = a.price;
-            bValue = b.price;
-            break;
-          case 'id':
-            aValue = a.id;
-            bValue = b.id;
-            break;
-          default:
-            return 0;
-        }
+    // Sort - always apply sorting for consistent display
+    const sortBy = filter.sortBy || 'id'; // Default to ID if no sort specified
+    const sortOrder = filter.sortOrder || 'asc'; // Default to ascending
+    
+    filteredProducts.sort((a, b) => {
+      let aValue: any, bValue: any;
+      
+      switch (sortBy) {
+        case 'name':
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case 'price':
+          aValue = Number(a.price);
+          bValue = Number(b.price);
+          break;
+        case 'id':
+          aValue = a.id;
+          bValue = b.id;
+          break;
+        default:
+          return 0;
+      }
 
-        if (aValue < bValue) return filter.sortOrder === 'desc' ? 1 : -1;
-        if (aValue > bValue) return filter.sortOrder === 'desc' ? -1 : 1;
+      // Ensure we're comparing valid numbers
+      if (isNaN(aValue) || isNaN(bValue)) {
+        console.warn('Invalid number comparison:', { aValue, bValue, sortBy });
         return 0;
-      });
-    }
+      }
+      
+      if (aValue < bValue) return sortOrder === 'desc' ? 1 : -1;
+      if (aValue > bValue) return sortOrder === 'desc' ? -1 : 1;
+      return 0;
+    });
 
     return filteredProducts;
   }

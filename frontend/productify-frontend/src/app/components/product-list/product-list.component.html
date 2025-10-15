@@ -4,31 +4,25 @@
   <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
     <div class="px-4 py-3">
       <div class="flex items-center justify-between">
-        <!-- Logo/Brand -->
-        <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-            <span class="text-white font-bold text-sm">P</span>
-          </div>
-          <h1 class="text-xl font-bold text-gray-900">Productify</h1>
-        </div>
         
-        <!-- Desktop Add Button -->
-        <button 
-          routerLink="/products/add"
-          class="hidden md:flex btn-primary touch-target">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-          </svg>
-          Add Product
-        </button>
-        
+        <!-- Title -->
+        <h1 class="text-2xl font-bold text-gray-900">
+          Produtos
+        </h1>
+
         <!-- Mobile Refresh Button -->
         <button 
           (click)="onRefresh()"
           class="md:hidden p-2 text-gray-600 hover:text-gray-900 touch-target">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
+          <span class="material-icons">refresh</span>
+        </button>
+
+        <!-- Desktop Add Button -->
+        <button 
+          routerLink="/products/add"
+          class="hidden md:flex btn-primary touch-target ml-auto">
+          <span class="material-icons mr-2">add</span>
+          Add Product
         </button>
       </div>
     </div>
@@ -84,14 +78,12 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">No products found</h3>
           <p class="text-gray-600 mb-6">Get started by adding your first product.</p>
           <button 
             routerLink="/products/add"
             class="btn-primary touch-target">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
+            <span class="material-icons mr-2">add</span>
             Add Your First Product
           </button>
         </div>
@@ -103,8 +95,6 @@
   <button 
     routerLink="/products/add"
     class="fab md:hidden">
-    <svg class="fab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-    </svg>
+    <span class="material-icons fab-icon">add</span>
   </button>
 </div>

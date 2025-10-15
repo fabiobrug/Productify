@@ -19,6 +19,14 @@ export const routes: Routes = [
     loadComponent: () => import('./components/product-form/product-form.component').then(m => m.ProductFormComponent)
   },
   {
+    path: 'orders',
+    loadComponent: () => import('./components/order-list/order-list.component').then(m => m.OrderListComponent)
+  },
+  {
+    path: 'orders/new',
+    loadComponent: () => import('./components/order-form/order-form.component').then(m => m.OrderFormComponent)
+  },
+  {
     path: '**',
     redirectTo: '/products'
   }

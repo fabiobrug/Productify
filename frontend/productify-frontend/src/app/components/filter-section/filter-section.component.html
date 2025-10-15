@@ -96,19 +96,19 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">Quick Filters</label>
         <div class="flex flex-wrap gap-2">
           <button
-            (click)="onMinPriceChange('0'); onMaxPriceChange('50')"
+            (click)="onQuickPriceFilter('0', '50')"
             class="px-3 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded-full touch-target">
-            Under $50
+            Under R$50
           </button>
           <button
-            (click)="onMinPriceChange('50'); onMaxPriceChange('100')"
+            (click)="onQuickPriceFilter('50', '100')"
             class="px-3 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded-full touch-target">
-            $50-$100
+            R$50-R$100
           </button>
           <button
-            (click)="onMinPriceChange('100'); onMaxPriceChange('')"
+            (click)="onQuickPriceFilter('100', '')"
             class="px-3 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded-full touch-target">
-            Over $100
+            Over R$100
           </button>
         </div>
       </div>
