@@ -4,7 +4,7 @@
 # Build configuration
 RAILWAY_BUILD_COMMAND="cd frontend/productify-frontend && npm ci && npm run build"
 
-# Start command - usar serve com configuração simples
+# Start command - usar serve para servir arquivos estáticos
 RAILWAY_START_COMMAND="cd frontend/productify-frontend && npx serve -s dist/productify-frontend/browser -l $PORT"
 
 # Root directory
