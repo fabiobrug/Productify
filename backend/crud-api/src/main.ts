@@ -14,6 +14,8 @@ async function bootstrap() {
       'http://localhost:4203', // Angular dev server alternative
       'http://localhost:4204', // Angular dev server alternative
       'http://localhost:4205', // Angular dev server alternative
+      'https://*.vercel.app', // Vercel frontend domains
+      'https://productify-frontend.vercel.app', // Specific frontend domain
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization',

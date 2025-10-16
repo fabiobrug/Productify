@@ -22,7 +22,9 @@ export class ProductsService {
   }
 
   async findAll() : Promise<Product[]> {
-    return this.productModel.findAll();
+    return this.productModel.findAll({
+      order: [['id', 'ASC']]
+    });
   }
 
   async findOne(id: number) : Promise<Product | null> {
