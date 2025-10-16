@@ -1,0 +1,15 @@
+# Vercel ignore file for backend
+node_modules
+coverage
+*.log
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.sqlite
+*.db
+test
+spec
+*.spec.ts
+*.test.ts
