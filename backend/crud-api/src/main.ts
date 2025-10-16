@@ -16,6 +16,9 @@ async function bootstrap() {
       'http://localhost:4205', // Angular dev server alternative
       'https://*.vercel.app', // Vercel frontend domains
       'https://productify-frontend.vercel.app', // Specific frontend domain
+      'https://productify.vercel.app', // Main domain
+      'https://productify-xi.vercel.app/'
+      
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization',
@@ -32,7 +35,14 @@ async function bootstrap() {
     transform: true,
   }));
   
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(`Server is running on port ${process.env.PORT ?? 3000}`);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`Server is running on port ${port}`);
 }
-bootstrap();
+
+// Para Vercel, exportar a função bootstrap
+if (process.env.NODE_ENV === 'production') {
+  bootstrap();
+} else {
+  bootstrap();
+}

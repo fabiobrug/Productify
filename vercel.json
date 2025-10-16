@@ -9,8 +9,11 @@
       }
     },
     {
-      "src": "backend/crud-api/src/main.ts",
-      "use": "@vercel/node"
+      "src": "backend/crud-api/package.json",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["backend/crud-api/**"]
+      }
     }
   ],
   "routes": [

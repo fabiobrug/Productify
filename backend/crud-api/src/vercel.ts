@@ -1,0 +1,48 @@
+import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { AppModule } from './app.module';
+
+let app: any;
+
+async function createApp() {
+  if (!app) {
+    app = await NestFactory.create(AppModule);
+    
+    // Enable CORS for frontend communication
+    app.enableCors({
+      origin: [
+        'http://localhost:4200', // Angular dev server default
+        'http://localhost:4201', // Angular dev server alternative
+        'http://localhost:4202', // Angular dev server alternative
+        'http://localhost:4203', // Angular dev server alternative
+        'http://localhost:4204', // Angular dev server alternative
+        'http://localhost:4205', // Angular dev server alternative
+        'https://*.vercel.app', // Vercel frontend domains
+        'https://productify-frontend.vercel.app', // Specific frontend domain
+        'https://productify.vercel.app', // Main domain
+      ],
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      allowedHeaders: 'Content-Type, Accept, Authorization',
+      credentials: true,
+    });
+    
+    // Set global prefix for API routes
+    app.setGlobalPrefix('api');
+    
+    // Enable validation pipes
+    app.useGlobalPipes(new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }));
+    
+    await app.init();
+  }
+  return app;
+}
+
+// Para Vercel
+export default async (req: any, res: any) => {
+  const app = await createApp();
+  return app.getHttpAdapter().getInstance()(req, res);
+};
