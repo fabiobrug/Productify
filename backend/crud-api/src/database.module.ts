@@ -17,7 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             dialect: 'postgres',
             uri: databaseUrl,
             autoLoadModels: true,
-            synchronize: !isProduction, // Apenas em desenvolvimento
+            synchronize: true, // Criar tabelas automaticamente
             logging: !isProduction,
             pool: {
               max: 5,
