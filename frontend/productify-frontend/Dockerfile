@@ -33,6 +33,9 @@ COPY --from=builder /app/dist/productify-frontend /usr/share/nginx/html
 # Create health check file
 RUN echo "OK" > /usr/share/nginx/html/health
 
+# Remove default nginx files
+RUN rm -rf /usr/share/nginx/html/index.html /usr/share/nginx/html/50x.html
+
 # Expose port (Railway will set PORT dynamically)
 EXPOSE $PORT
 

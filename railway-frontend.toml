@@ -1,12 +1,6 @@
 # Railway Configuration for Frontend
 # This file tells Railway how to deploy the frontend service
 
-# Build configuration - Railway will use Dockerfile
-RAILWAY_BUILD_COMMAND="cd frontend/productify-frontend && npm ci && npm run build"
-
-# Start command - Railway will use Dockerfile CMD with dynamic port
-RAILWAY_START_COMMAND="/start.sh"
-
 # Root directory
 RAILWAY_ROOT_DIRECTORY="frontend/productify-frontend"
 
