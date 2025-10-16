@@ -11,6 +11,48 @@ import { environment } from '../../environments/environment';
 export class ProductService {
   private readonly API_URL = 'https://productify-production.up.railway.app/api/products';
   
+  // State management with BehaviorSubjects
+  private productsSubject = new BehaviorSubject<Product[]>([]);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  private errorSubject = new BehaviorSubject<string | null>(null);
+  private filterSubject = new BehaviorSubject<ProductFilter>({});
+
+  // Public observables
+  public readonly products$ = this.productsSubject.asObservable();
+  public readonly loading$ = this.loadingSubject.asObservable();
+  public readonly error$ = this.errorSubject.asObservable();
+  public readonly filter$ = this.filterSubject.asObservable();
+
+  // Combined state observable
+  public readonly state$: Observable<ProductState> = combineLatest([
+    this.products$,
+    this.loading$,
+    this.error$,
+    this.filter$
+  ]).pipe(
+    map(([products, loading, error, filter]) => ({
+      products,
+      loading,
+      error,
+      filter
+    })),
+    shareReplay(1)
+  );
+
+  // Filtered products with reactive filtering
+  public readonly filteredProducts$ = combineLatest([
+    this.products$,
+    this.filterSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged((prev, curr) => 
+        JSON.stringify(prev) === JSON.stringify(curr)
+      )
+    )
+  ]).pipe(
+    map(([products, filter]) => this.applyFilters(products, filter)),
+    shareReplay(1)
+  );
+
   constructor(private http: HttpClient) {
     // Log da URL para debug
     console.log('ProductService API_URL:', this.API_URL);
