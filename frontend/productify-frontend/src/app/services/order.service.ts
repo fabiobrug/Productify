@@ -4,12 +4,13 @@ import { BehaviorSubject, Observable, combineLatest, throwError } from 'rxjs';
 import { map, catchError, tap, debounceTime, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import { Order, CreateOrderRequest, UpdateOrderRequest, OrderFilter, OrderState, CartItem, CartState } from '../models/order.model';
 import { Product } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private readonly API_URL = 'http://localhost:3000/orders';
+  private readonly API_URL = `${environment.apiUrl}/orders`;
   
   // State management with BehaviorSubjects
   private ordersSubject = new BehaviorSubject<Order[]>([]);

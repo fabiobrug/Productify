@@ -22,6 +22,9 @@ async function bootstrap() {
     credentials: true,
   });
   
+  // Set global prefix for API routes
+  app.setGlobalPrefix('api');
+  
   // Enable validation pipes
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,

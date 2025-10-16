@@ -2,14 +2,25 @@
   "version": 2,
   "builds": [
     {
+      "src": "frontend/productify-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/productify-frontend"
+      }
+    },
+    {
       "src": "backend/crud-api/src/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "backend/crud-api/src/main.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/productify-frontend/dist/productify-frontend/index.html"
     }
   ],
   "env": {

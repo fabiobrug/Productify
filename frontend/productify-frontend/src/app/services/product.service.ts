@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, combineLatest, throwError, of } from 'rxjs';
 import { map, catchError, tap, debounceTime, distinctUntilChanged, shareReplay, switchMap } from 'rxjs/operators';
 import { Product, CreateProductRequest, UpdateProductRequest, ProductFilter, ProductState } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private readonly API_URL = 'http://localhost:3000/products';
+  private readonly API_URL = `${environment.apiUrl}/products`;
   
   // State management with BehaviorSubjects
   private productsSubject = new BehaviorSubject<Product[]>([]);
