@@ -10,6 +10,27 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: (configService: ConfigService) => {
         const isProduction = configService.get('NODE_ENV') === 'production';
         
+        // Se DATABASE_URL estiver definida (Railway/Neon), usar ela
+        const databaseUrl = configService.get('DATABASE_URL');
+        if (databaseUrl) {
+          return {
+            dialect: 'postgres',
+            uri: databaseUrl,
+            autoLoadModels: true,
+            synchronize: !isProduction, // Apenas em desenvolvimento
+            logging: !isProduction,
+            pool: {
+              max: 5,
+              min: 0,
+              acquire: 30000,
+              idle: 10000,
+            },
+            dialectOptions: {
+              ssl: isProduction ? { rejectUnauthorized: false } : false,
+            },
+          };
+        }
+        
         // Configuração para PostgreSQL em produção/Docker
         if (isProduction || configService.get('DATABASE_HOST')) {
           return {
@@ -27,6 +48,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
               min: 0,
               acquire: 30000,
               idle: 10000,
+            },
+            dialectOptions: {
+              ssl: isProduction ? { rejectUnauthorized: false } : false,
             },
           };
         }

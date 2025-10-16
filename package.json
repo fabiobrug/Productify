@@ -1,1 +1,13 @@
-{}
+{
+  "name": "productify",
+  "version": "1.0.0",
+  "description": "Productify - Sistema de Gestão de Produtos e Pedidos",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo 'This is a monorepo. Please deploy backend and frontend separately.'",
+    "build": "echo 'This is a monorepo. Please build backend and frontend separately.'"
+  },
+  "keywords": ["productify", "nestjs", "angular", "postgresql"],
+  "author": "Fabio Brug",
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+# Railway Configuration for Backend
+# This file tells Railway how to deploy the backend service
+
+# Build configuration
+RAILWAY_BUILD_COMMAND="cd backend/crud-api && npm ci && npm run build"
+
+# Start command
+RAILWAY_START_COMMAND="cd backend/crud-api && npm run start:prod"
+
+# Root directory
+RAILWAY_ROOT_DIRECTORY="backend/crud-api"
