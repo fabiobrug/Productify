@@ -17,6 +17,7 @@ async function bootstrap() {
         'http://localhost:4205', // Angular dev server alternative
         'https://comfortable-solace-production.up.railway.app', // Frontend Railway URL
         'https://productify-frontend-production.up.railway.app', // Alternative frontend URL
+        'https://comfortable-solace-production.up.railway.app/', // Frontend Railway URL with trailing slash
       ];
 
   app.enableCors({
