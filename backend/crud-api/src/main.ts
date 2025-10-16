@@ -5,25 +5,11 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Enable CORS for frontend communication
-  const corsOrigins = process.env.CORS_ORIGINS 
-    ? process.env.CORS_ORIGINS.split(',')
-    : [
-        'http://localhost:4200', // Angular dev server default
-        'http://localhost:4201', // Angular dev server alternative
-        'http://localhost:4202', // Angular dev server alternative
-        'http://localhost:4203', // Angular dev server alternative
-        'http://localhost:4204', // Angular dev server alternative
-        'http://localhost:4205', // Angular dev server alternative
-        'https://comfortable-solace-production.up.railway.app', // Frontend Railway URL
-        'https://productify-frontend-production.up.railway.app', // Alternative frontend URL
-        'https://comfortable-solace-production.up.railway.app/', // Frontend Railway URL with trailing slash
-      ];
-
-  console.log('CORS Origins configured:', corsOrigins);
+  // Enable CORS for frontend communication - SIMPLIFIED FOR PRODUCTION
+  console.log('Enabling CORS for all origins in production');
 
   app.enableCors({
-    origin: corsOrigins,
+    origin: true, // Allow all origins temporarily
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
     credentials: true,
