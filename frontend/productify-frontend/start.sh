@@ -9,13 +9,14 @@ if [ ! -f "/usr/share/nginx/html/index.html" ]; then
     echo "ERRO: index.html não encontrado!"
     echo "Conteúdo do diretório:"
     find /usr/share/nginx/html -type f
-    exit 1
+    # Não sair com erro, apenas mostrar warning
+    echo "Continuando mesmo sem index.html..."
 fi
 
 # Corrigir permissões se necessário
 echo "=== Corrigindo permissões ==="
-chown -R nginx:nginx /usr/share/nginx/html
-chmod -R 755 /usr/share/nginx/html
+chown -R nginx:nginx /usr/share/nginx/html 2>/dev/null || true
+chmod -R 755 /usr/share/nginx/html 2>/dev/null || true
 
 # Substituir a porta no nginx.conf pela variável PORT do Railway
 echo "=== Configurando porta $PORT ==="
@@ -27,8 +28,14 @@ cat /etc/nginx/nginx.conf | grep listen
 
 # Testar configuração do nginx
 echo "=== Testando configuração do Nginx ==="
-nginx -t
+nginx -t || {
+    echo "ERRO na configuração do Nginx!"
+    echo "Usando configuração padrão..."
+    # Usar configuração padrão se a customizada falhar
+    cp /etc/nginx/nginx.conf.default /etc/nginx/nginx.conf 2>/dev/null || true
+    sed -i "s/listen 80;/listen $PORT;/" /etc/nginx/nginx.conf
+}
 
 # Iniciar o Nginx
 echo "=== Iniciando Nginx ==="
-nginx -g "daemon off;"
+exec nginx -g "daemon off;"

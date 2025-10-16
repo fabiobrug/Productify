@@ -30,15 +30,12 @@ RUN chmod +x /start.sh
 # Copy built application from builder stage
 COPY --from=builder /app/dist/productify-frontend /usr/share/nginx/html
 
-# Set proper permissions
-RUN chown -R nginx:nginx /usr/share/nginx/html && \
-    chmod -R 755 /usr/share/nginx/html
-
 # Create health check file
 RUN echo "OK" > /usr/share/nginx/html/health
 
-# Remove default nginx files
-RUN rm -rf /usr/share/nginx/html/index.html /usr/share/nginx/html/50x.html
+# Set proper permissions
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
 
 # Expose port (Railway will set PORT dynamically)
 EXPOSE $PORT
