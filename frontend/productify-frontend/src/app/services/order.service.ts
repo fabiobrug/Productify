@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class OrderService {
-  private readonly API_URL = `${environment.apiUrl}/orders`;
+  private readonly API_URL = 'https://productify-production.up.railway.app/api/orders';
   
   // State management with BehaviorSubjects
   private ordersSubject = new BehaviorSubject<Order[]>([]);
@@ -68,6 +68,10 @@ export class OrderService {
   );
 
   constructor(private http: HttpClient) {
+    // Log da URL para debug
+    console.log('OrderService API_URL:', this.API_URL);
+    console.log('Environment:', environment);
+    
     // Load orders on service initialization
     this.loadOrders();
   }
