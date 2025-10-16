@@ -115,6 +115,11 @@ API_URL=${API_URL}
 - [x] Script de deploy criado
 - [x] Documentação completa
 
+### 🌐 URLs DE PRODUÇÃO
+- **Frontend**: https://comfortable-solace-production.up.railway.app/products
+- **Backend API**: https://productify-production.up.railway.app/api/products
+- **Backend Health**: https://productify-production.up.railway.app/api/health
+
 ### 🎯 PRÓXIMOS PASSOS
 1. Instalar Railway CLI
 2. Fazer login no Railway
