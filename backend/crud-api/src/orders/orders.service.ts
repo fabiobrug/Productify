@@ -60,9 +60,17 @@ export class OrdersService {
   }
 
   async findAll(): Promise<Order[]> {
-    return this.orderModel.findAll({
-      order: [['createdAt', 'DESC']],
-    });
+    try {
+      console.log('OrdersService.findAll() called');
+      const orders = await this.orderModel.findAll({
+        order: [['createdAt', 'DESC']],
+      });
+      console.log('Orders found:', orders.length);
+      return orders;
+    } catch (error) {
+      console.error('Error in findAll orders:', error);
+      throw error;
+    }
   }
 
   async findOne(id: number): Promise<Order | null> {

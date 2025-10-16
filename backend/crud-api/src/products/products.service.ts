@@ -22,9 +22,17 @@ export class ProductsService {
   }
 
   async findAll() : Promise<Product[]> {
-    return this.productModel.findAll({
-      order: [['id', 'ASC']]
-    });
+    try {
+      console.log('ProductsService.findAll() called');
+      const products = await this.productModel.findAll({
+        order: [['id', 'ASC']]
+      });
+      console.log('Products found:', products.length);
+      return products;
+    } catch (error) {
+      console.error('Error in findAll:', error);
+      throw error;
+    }
   }
 
   async findOne(id: number) : Promise<Product | null> {
