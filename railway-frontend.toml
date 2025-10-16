@@ -1,8 +1,14 @@
 # Railway Configuration for Frontend
 # This file tells Railway how to deploy the frontend service
 
+# Build configuration
+RAILWAY_BUILD_COMMAND="cd frontend/productify-frontend && npm ci && npm run build"
+
+# Start command - usar serve para servir arquivos estáticos
+RAILWAY_START_COMMAND="cd frontend/productify-frontend && npx serve -s dist/productify-frontend/browser -l $PORT"
+
 # Root directory
 RAILWAY_ROOT_DIRECTORY="frontend/productify-frontend"
 
 # Static site configuration
-RAILWAY_SPA_OUTPUT_DIR="dist/productify-frontend"
+RAILWAY_SPA_OUTPUT_DIR="dist/productify-frontend/browser"
