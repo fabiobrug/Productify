@@ -23,22 +23,11 @@ async function bootstrap() {
   console.log('CORS Origins configured:', corsOrigins);
 
   app.enableCors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      
-      // Check if origin is in allowed list
-      if (corsOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      
-      console.log('CORS blocked origin:', origin);
-      return callback(new Error('Not allowed by CORS'), false);
-    },
+    origin: corsOrigins,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
     credentials: true,
-    optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200,
   });
   
   // Set global prefix for API routes
