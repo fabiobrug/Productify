@@ -23,14 +23,18 @@ FROM nginx:alpine AS production
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Copy startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Copy built application from builder stage
 COPY --from=builder /app/dist/productify-frontend /usr/share/nginx/html
 
 # Create health check file
 RUN echo "OK" > /usr/share/nginx/html/health
 
-# Expose port 80
-EXPOSE 80
+# Expose port (Railway will set PORT dynamically)
+EXPOSE $PORT
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start Nginx with dynamic port
+CMD ["/start.sh"]
