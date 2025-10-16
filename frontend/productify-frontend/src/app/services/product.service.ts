@@ -62,14 +62,23 @@ export class ProductService {
     this.loadProducts();
   }
 
+  // Helper method to add cache busting
+  private getUrlWithCacheBust(url: string): string {
+    return `${url}?t=${Date.now()}`;
+  }
+
   // CRUD Operations
   loadProducts(): void {
     this.setLoading(true);
     this.clearError();
     
-    this.http.get<Product[]>(this.API_URL)
+    const url = this.getUrlWithCacheBust(this.API_URL);
+    console.log('Loading products from:', url);
+    
+    this.http.get<Product[]>(url)
       .pipe(
         tap(products => {
+          console.log('Products loaded successfully:', products);
           this.productsSubject.next(products);
           this.setLoading(false);
         }),
