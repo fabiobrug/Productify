@@ -52,10 +52,11 @@ O **Productify** é uma aplicação web completa de gestão de produtos e pedido
 
 ### DevOps & Infraestrutura
 - **Containerização**: Docker + Docker Compose
-- **Scripts**: Automação com shell scripts
+- **Scripts**: Automação com shell scripts (`docker-scripts.sh`)
 - **Database**: PostgreSQL com health checks
 - **Cache**: Redis (opcional)
-- **Deploy**: Configuração para produção (a ser implementado)
+- **Deploy**: Railway configurado e funcionando
+- **Variáveis**: Configuração por ambiente (`env.example`)
 
 ## 🏗️ Arquitetura do Sistema
 
@@ -143,7 +144,8 @@ Productify/
 │   │   ├── app.module.ts                # Módulo principal
 │   │   ├── database.module.ts           # Configuração DB
 │   │   └── main.ts                      # Bootstrap
-│   ├── Dockerfile.dev.fast              # Docker para desenvolvimento
+│   ├── Dockerfile                       # Docker para produção
+│   ├── Dockerfile.dev.fast             # Docker para desenvolvimento
 │   ├── package.json                     # Dependências backend
 │   └── coverage/                        # Relatórios de teste
 ├── 📁 frontend/productify-frontend/      # Frontend Angular
@@ -158,26 +160,74 @@ Productify/
 │   │   │   └── 📁 notification-toast/   # Sistema de notificações
 │   │   ├── 📁 services/                 # Serviços Angular
 │   │   │   ├── product.service.ts       # Serviço de produtos
-│   │   │   └── order.service.ts         # Serviço de pedidos
+│   │   │   ├── order.service.ts         # Serviço de pedidos
+│   │   │   └── notification.service.ts  # Serviço de notificações
 │   │   ├── 📁 models/                   # Interfaces TypeScript
 │   │   │   ├── product.model.ts
 │   │   │   └── order.model.ts
 │   │   ├── app.component.ts             # Componente raiz
 │   │   ├── app.routes.ts                # Configuração de rotas
 │   │   └── app.config.ts                # Configuração da app
+│   ├── Dockerfile                       # Docker para produção
 │   ├── package.json                     # Dependências frontend
 │   └── tailwind.config.js               # Configuração Tailwind
 ├── 📁 database/init/                    # Scripts de inicialização
 │   └── 01-init.sql                      # Schema inicial
 ├── docker-compose.yml                   # Produção
-├── docker-compose.dev.yml               # Desenvolvimento
-├── docker-scripts.sh                    # Scripts de automação
-└── env.example                          # Variáveis de ambiente
+├── docker-compose.dev.yml              # Desenvolvimento
+├── docker-scripts.sh                    # Scripts de automação Docker
+├── env.example                          # Variáveis de ambiente exemplo
+├── railway-backend.toml                 # Configuração Railway Backend
+├── railway-frontend.toml                # Configuração Railway Frontend
+├── railway.env                          # Variáveis Railway
+├── deploy-railway.sh                    # Script de deploy Railway
+├── configure-railway.sh                 # Script de configuração Railway
+└── CONTEXTO_DEPLOY.md                   # Documentação de deploy
 ```
 
 ## 🔧 Comandos Úteis
 
-### Gerenciamento de Containers
+### 🐳 Scripts Docker Automatizados
+```bash
+# Dar permissão ao script (primeira execução)
+chmod +x docker-scripts.sh
+
+# Iniciar ambiente de desenvolvimento
+./docker-scripts.sh start-dev
+
+# Iniciar ambiente de produção
+./docker-scripts.sh start-prod
+
+# Parar todos os containers
+./docker-scripts.sh stop
+
+# Ver logs (desenvolvimento)
+./docker-scripts.sh logs dev
+
+# Ver logs (produção)
+./docker-scripts.sh logs
+
+# Ver status dos containers
+./docker-scripts.sh status
+
+# Executar comando no container
+./docker-scripts.sh exec backend npm run test
+./docker-scripts.sh exec database psql -U productify_user -d productify
+
+# Backup do banco de dados
+./docker-scripts.sh backup
+
+# Restaurar backup
+./docker-scripts.sh restore backup.sql
+
+# Limpar recursos Docker
+./docker-scripts.sh cleanup
+
+# Mostrar ajuda
+./docker-scripts.sh help
+```
+
+### Gerenciamento Manual de Containers
 ```bash
 # Verificar status dos containers
 docker compose -f docker-compose.dev.yml ps
@@ -255,6 +305,61 @@ O projeto está **100% funcional em produção** com:
 - ✅ **Deploy automático** via Git
 - ✅ **Health checks** funcionando
 
+### 🚀 Scripts de Deploy Railway
+
+```bash
+# Deploy automático completo
+./deploy-railway.sh
+
+# Configurar variáveis de ambiente
+./configure-railway.sh
+
+# Deploy manual do backend
+railway up --service backend
+
+# Deploy manual do frontend
+railway up --service frontend
+```
+
+### 📋 Arquivos de Configuração Railway
+
+- **`railway-backend.toml`**: Configuração do backend
+- **`railway-frontend.toml`**: Configuração do frontend
+- **`railway.env`**: Variáveis de ambiente
+- **`deploy-railway.sh`**: Script de deploy automatizado
+- **`configure-railway.sh`**: Script de configuração
+
+### 🔧 Configuração de Variáveis de Ambiente
+
+Copie o arquivo `env.example` para `.env` e configure as variáveis:
+
+```bash
+# Database Configuration
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_NAME=productify
+DATABASE_USER=productify_user
+DATABASE_PASSWORD=productify_password
+DATABASE_URL=postgresql://productify_user:productify_password@localhost:5432/productify
+
+# Application Configuration
+NODE_ENV=development
+PORT=3000
+API_URL=http://localhost:3000
+
+# Redis Configuration (optional)
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=redis_password
+
+# Security
+JWT_SECRET=your-super-secret-jwt-key-here
+JWT_EXPIRES_IN=24h
+
+# CORS
+CORS_ORIGIN=http://localhost:4200
+```
+
 ## 🧪 Testes e Qualidade
 
 ### Backend
@@ -319,11 +424,14 @@ O projeto está **100% funcional em produção** com:
 
 #### Container não inicia
 ```bash
-# Verificar logs
+# Usar script automatizado
+./docker-scripts.sh logs dev
+
+# Verificar logs manualmente
 docker logs productify-backend-dev
 
 # Reconstruir containers
-docker compose -f docker-compose.dev.yml up --build -d
+./docker-scripts.sh start-dev
 ```
 
 #### Porta já em uso
@@ -331,9 +439,13 @@ docker compose -f docker-compose.dev.yml up --build -d
 # Verificar processos
 sudo lsof -i :3000
 sudo lsof -i :4200
+sudo lsof -i :5432
 
 # Parar processos
 sudo kill -9 <PID>
+
+# Parar todos os containers
+./docker-scripts.sh stop
 ```
 
 #### Problemas de permissão Docker
@@ -341,25 +453,61 @@ sudo kill -9 <PID>
 # Adicionar usuário ao grupo docker
 sudo usermod -aG docker $USER
 # Reiniciar sessão
+
+# Dar permissão ao script
+chmod +x docker-scripts.sh
 ```
 
 #### Frontend não conecta com backend
 ```bash
 # Verificar se backend está rodando
-curl http://localhost:3000/products
+curl http://localhost:3000/api/health
 
 # Verificar logs do backend
-docker logs productify-backend-dev
+./docker-scripts.sh logs dev
+
+# Verificar status dos containers
+./docker-scripts.sh status
+```
+
+#### Problemas de CORS
+```bash
+# Verificar configuração CORS no backend
+curl -H "Origin: http://localhost:4200" -I http://localhost:3000/api/products
+
+# Verificar variáveis de ambiente
+cat env.example
+```
+
+#### Problemas de banco de dados
+```bash
+# Backup do banco
+./docker-scripts.sh backup
+
+# Restaurar backup
+./docker-scripts.sh restore backup.sql
+
+# Executar comandos no banco
+./docker-scripts.sh exec database psql -U productify_user -d productify
 ```
 
 ## 📞 Suporte e Contato
 
 Para dúvidas ou problemas:
 
-1. **Verificar logs**: `docker logs productify-backend-dev`
-2. **Confirmar portas**: Verificar se 3000 e 4200 estão livres
-3. **Docker status**: Confirmar se Docker está rodando
-4. **Reconstruir**: Executar `docker compose up --build -d`
+1. **Usar scripts automatizados**: `./docker-scripts.sh help`
+2. **Verificar logs**: `./docker-scripts.sh logs dev`
+3. **Confirmar portas**: Verificar se 3000, 4200 e 5432 estão livres
+4. **Docker status**: Confirmar se Docker está rodando
+5. **Reconstruir**: Executar `./docker-scripts.sh start-dev`
+6. **Status completo**: Executar `./docker-scripts.sh status`
+
+### 📚 Documentação Adicional
+
+- **`CONTEXTO_DEPLOY.md`**: Documentação completa de deploy
+- **`env.example`**: Exemplo de variáveis de ambiente
+- **`docker-scripts.sh help`**: Ajuda dos scripts Docker
+- **Logs detalhados**: Use `./docker-scripts.sh logs dev` para debug
 
 ---
 
