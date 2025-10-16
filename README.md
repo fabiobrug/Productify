@@ -55,7 +55,7 @@ O **Productify** é uma aplicação web completa de gestão de produtos e pedido
 - **Scripts**: Automação com shell scripts
 - **Database**: PostgreSQL com health checks
 - **Cache**: Redis (opcional)
-- **Deploy**: Configuração para Vercel + Supabase
+- **Deploy**: Configuração para produção (a ser implementado)
 
 ## 🏗️ Arquitetura do Sistema
 
@@ -238,32 +238,13 @@ npm run build
 
 ## 🌐 Deploy em Produção
 
-### Configuração Vercel + Supabase
+### Configuração de Produção (A ser implementado)
 
-#### 1. Variáveis de Ambiente (Vercel)
-```env
-# Database
-DATABASE_URL=postgresql://user:pass@host:port/db
-DATABASE_HOST=your-supabase-host
-DATABASE_PORT=5432
-DATABASE_NAME=your-db-name
-DATABASE_USER=your-user
-DATABASE_PASSWORD=your-password
-
-# Application
-NODE_ENV=production
-PORT=3000
-```
-
-#### 2. Frontend (Vercel)
-```env
-API_URL=https://your-backend.vercel.app
-```
-
-### Opções de Database
-- **Supabase** (Recomendado): Gratuito até 500MB
-- **PlanetScale**: Gratuito até 1GB
-- **Railway**: Gratuito até $5/mês
+O deploy em produção será configurado em momento futuro, incluindo:
+- Configuração de variáveis de ambiente
+- Setup de banco de dados em produção
+- Configuração de CI/CD
+- Monitoramento e logs
 
 ## 🧪 Testes e Qualidade
 
@@ -388,4 +369,4 @@ Este projeto demonstra competências completas em desenvolvimento full-stack mod
 
 ---
 
-*Este projeto foi desenvolvido como demonstração de habilidades técnicas para processos seletivos de desenvolvimento full-stack.*# Force redeploy Thu Oct 16 12:41:41 AM -03 2025
+*Este projeto foi desenvolvido como demonstração de habilidades técnicas para processos seletivos de desenvolvimento full-stack.*
